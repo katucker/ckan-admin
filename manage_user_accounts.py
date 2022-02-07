@@ -89,9 +89,14 @@ def update_user_account(connection, user_data_dict):
                 logging.info('Regenerated API Key for %s', user_data_dict['id'])
             # Remove the API Key key pair from the user_data_dict before proceeding
             user_data_dict.pop('apikey')
+        # Remove any keys for fields that cannot be changed.
+        user_data_dict.pop('name',None)
+        user_data_dict.pop('email',None)
         if len(user_data_dict) > 1:
             result = connection.call_action(action='user_update', data_dict=user_data_dict)
             logging.info("Updated user account for %s", result['name'])
+        else:
+            logging.info("Nothing left to update for %s", user_data_dict['id'])
 
     except:
        logging.exception('Error attempting to update user account for {}'.format(user_data_dict['id']))
@@ -106,6 +111,8 @@ def manage_user_account(connection, user_data_dict):
     
 if __name__ == '__main__':
 
+    logging.basicConfig(level=logging.INFO)
+    
     # Retrieve the URL and API Key from environment variables, if set.
     url = os.getenv('CKAN_URL', None)
     api_key = os.getenv('CKAN_KEY', None)
