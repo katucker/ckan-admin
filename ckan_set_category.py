@@ -2,7 +2,6 @@ import argparse
 import getpass
 import logging
 import os
-import sys
 
 import ckanapi
 import json
@@ -19,8 +18,8 @@ def find_dataset(connection, title):
             return None
 
     except ckanapi.errors.NotFound:
-       logging.error(f'No package found with title {title}')
-       return None
+        logging.error('No package found with title %s', title)
+        return None
 
 def set_category(connection, package_name, category_name):
     category_id = None
@@ -36,7 +35,7 @@ def set_category(connection, package_name, category_name):
         category_id = result.get('id')
         result = connection.call_action(action='member_create', data_dict={'id': category_id, 'object': package_name, 'object_type': 'package', 'capacity': 'member'})
     except ckanapi.errors.NotFound:
-        logging.info(f'Cannot find group {category_name}')
+        logging.info('Cannot find group %s', category_name)
 
     
 if __name__ == '__main__':
@@ -72,10 +71,11 @@ if __name__ == '__main__':
             input_dict = json.load(ifp)
             for dataset in input_dict.get('dataset'):
                 dataset_title = dataset.get('title')
-                logging.info(f'Searching for dataset {dataset_title}')
+                logging.info('Searching for dataset %s', dataset_title)
                 pkg_id = find_dataset(remote,dataset_title)
                 if pkg_id is not None:
-                    logging.info(f'Setting category for package id {pkg_id} to {args.category}')
+                    logging.info('Setting category for package id %s to %s', pkg_id, args.category)
                     set_category(remote, pkg_id, args.category)
     if args.id is not None:
         set_category(remote, args.id, args.category)
+        
