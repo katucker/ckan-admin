@@ -10,7 +10,8 @@ import json
 def dump_dataset(connection, id):
     
     try:
-        result = connection.call_action(action='package_search', data_dict={'q': 'name:{} OR id:{}'.format(id,id), 'fl': 'id, name, title, dataset_type'})
+        #result = connection.call_action(action='package_search', data_dict={'q': f'title:{id}', 'fl': 'id, name, title, dataset_type'})
+        result = connection.call_action(action='package_search', data_dict={'q': f'title:{id}'})
         print("Filtered search results:")
         print(json.dumps(result, indent=2))
 
@@ -20,6 +21,8 @@ def dump_dataset(connection, id):
 
     
 if __name__ == '__main__':
+
+    logging.basicConfig(level=os.environ.get("LOGLEVEL",logging.ERROR))
 
     url = os.getenv('ED_CKAN_URL', None)
     apiKey = os.getenv('ED_CKAN_KEY', None)
@@ -34,7 +37,6 @@ if __name__ == '__main__':
     id = ''
     if len(sys.argv) > 1:
         id = sys.argv[1]
-        dump_dataset(remote,id)
     else:
         id = input('Enter dataset identifier:')
 

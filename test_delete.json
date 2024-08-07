@@ -1,0 +1,14 @@
+[
+    {
+        "action": "delete",
+        "id": "test_user1"
+    },
+    {
+        "action": "delete",
+        "id": "test_user2"
+    },
+    {
+        "action": "delete",
+        "id": "test_user3"
+    }
+]

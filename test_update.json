@@ -1,0 +1,11 @@
+[
+    {
+        "action": "update",
+        "id": "test_user1",
+        "fullname": "Update User1"
+    },
+    {
+        "action": "reset",
+        "id": "test_user2"
+    }
+]
